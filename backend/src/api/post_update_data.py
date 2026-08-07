@@ -2,11 +2,11 @@ from sqlalchemy import update, select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.exc import IntegrityError
 from fastapi import Depends, HTTPException
-from core.dependency import get_db, AsyncSession
-from api.get_data import get_job
+from src.core.dependency import get_db, AsyncSession
+from src.api.get_data import get_job
 # from api.get_data import get_applications
-from models.models import Application, Employee, Job, Company, Worker
-from schemas.categorial_db_columns import ApplicationDecision
+from src.models.models import Application, Employee, Job, Company, Worker
+from src.schemas.categorial_db_columns import ApplicationDecision
 
 # async def hire_employee(
 #     reply:str,

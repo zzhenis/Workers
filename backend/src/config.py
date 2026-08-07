@@ -2,6 +2,7 @@ from sqlalchemy.orm import DeclarativeBase
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.engine import URL
+
 class Base(DeclarativeBase):
     pass
 
@@ -13,7 +14,7 @@ class Settings(BaseSettings):
     DB_PASS:str
 
     @property
-    def DATEBASE_URL_asyncpg(self):
+    def DATABASE_URL_asyncpg(self):
         return URL.create(
             drivername="postgresql+asyncpg",
             username=self.DB_USER,
@@ -38,7 +39,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 async_engine = create_async_engine(
-    url=settings.DATEBASE_URL_asyncpg,
+    url=settings.DATABASE_URL_asyncpg,
     echo=False
 )
 

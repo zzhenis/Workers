@@ -1,8 +1,8 @@
-from config import async_session_factory, AsyncSession
+from src.config import async_session_factory, AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from models.models import Worker, Company, Job, Employee, Application
-from core.security import JWTError, auth_config, jwt
+from src.models.models import Worker, Company, Job, Employee, Application
+from src.core.security import JWTError, auth_config, jwt
 from fastapi import HTTPException, Cookie, Depends
 from dotenv import load_dotenv
 import os

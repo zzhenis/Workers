@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, EmailStr
-from schemas.categorial_db_columns import WorkFormat, EmploymentType, ExperienceLevel
+from src.schemas.categorial_db_columns import WorkFormat, EmploymentType, ExperienceLevel
 class Job_schema(BaseModel):
     title:str = Field(
         max_length=40,

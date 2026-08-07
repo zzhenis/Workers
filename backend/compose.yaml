@@ -1,50 +1,79 @@
+name: workers
 services:
-    db:
-        image: postgrese:16-alpine
-        container_name: job_board_db
-        restart: always
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
 
-        env_file:
-            - ../.env
-        environment:
-            POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASS}
-            POSTGRES_DB: ${DB_NAME}    
-            PGDATA: /var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_DB: ${DB_NAME}    
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
-        ports:
-            - "5432:5432"
-        volumes:
-            - postgres_data:/var/lib/postgresql
+  pg-admin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
 
-    pg-admin:
-        image: dpage/pgadmin4
-        container_name: pgadmin
-        restart: always
-        depends_on:
-            - db
-        env_file:
-            - ../.env
-        environment:
-            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
-        ports:
-            - 5050:80
-    api:
-        image: job_board_api:latest
-        container_name: job_board_api
-        depends_on:
-            db:
-                condition: service_healthy
-        ports:
-            "8000:8000"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
+              
+    ports:
+      - "5050:80"
 
-    web:
-        image: job_board_frontend:latest
-        container_name: job_board_web
-        depends_on:
-            - api
-        ports:
-            "5173:80"
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    image: job_board_api
+    build:
+      context: .
+    env_file:
+      - ./.env
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+  web:
+    image: job_board_front
+    build:
+      context: ../frontend
+    ports:
+      - "5173:80"
+  migrations:
+    environment:
+      - DB_URL=postgresql+asyncpg://${DB_USER}:${DB_PASS}@db:5432/${DB_NAME}?async_fallback=True
+    build: .
+    command: alembic upgrade head
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
 volumes:
-    postgres_data:
+   postgres_data:
+
+#what's the difference between:
+
+# volumes:
+#  - postgres_data
+# and
+# volumes:
+#   postgres_data:
+
+# explain meaning of each number, why not bigger or smaller amount : 
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
+    #   start_period: 30s

@@ -1,18 +1,21 @@
 from logging.config import fileConfig
-
+import os
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from models.models import Job
+from src.models.models import Job, Company, Base
 
 from alembic import context
-from config import settings, Base
+from src.config import settings
 
 config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-config.set_main_option("sqlalchemy.url", str(settings.DATEBASE_URL_asyncpg) + "?async_fallback=True")
+url = os.getenv("DB_URL")
+
+config.set_main_option("sqlalchemy.url", str(url) )
+
 
 target_metadata = Base.metadata
 
@@ -20,6 +23,7 @@ target_metadata = Base.metadata
 def run_migrations_offline() -> None:
 
     url = config.get_main_option("sqlalchemy.url")
+
     context.configure(
         url=url,
         target_metadata=target_metadata,

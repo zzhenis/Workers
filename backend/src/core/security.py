@@ -2,7 +2,6 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerifyMismatchError
 import asyncio
 from sqlalchemy import select
-from config import AsyncSession
 from authx import AuthXConfig, AuthX
 import os
 from fastapi import Response

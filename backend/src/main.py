@@ -1,15 +1,15 @@
 from fastapi import FastAPI, Depends, HTTPException, Response, Query
 import uvicorn
-from core.dependency import get_db, get_current_user, require_role,  get_application, verify_employee
-from config import AsyncSession
-from core.security import authenticate_user, set_cookie
-from schemas.schemas import Company_schema, Worker_schema, Job_schema, Employee_schema, JobFilterSchema
-from schemas.registration import CreateCompany, CreateWorker
-from schemas.login import LoginCompany, LoginWorker
-from models.models import Worker, Company, Job, Application, Employee
-from core.security import password_hasher
-from api.get_data import get_jobs, get_applications, get_cities ,get_job, filter_jobs , get_applications_company, get_application
-from api.post_update_data import recruitment, update_job_opening, create_application
+from src.core.dependency import get_db, get_current_user, require_role,  get_application, verify_employee
+from src.config import AsyncSession
+from src.core.security import authenticate_user, set_cookie
+from src.schemas.schemas import Company_schema, Worker_schema, Job_schema, Employee_schema, JobFilterSchema
+from src.schemas.registration import CreateCompany, CreateWorker
+from src.schemas.login import LoginCompany, LoginWorker
+from src.models.models import Worker, Company, Job, Application, Employee
+from src.core.security import password_hasher
+from src.api.get_data import get_jobs, get_applications, get_cities ,get_job, filter_jobs , get_applications_company, get_application
+from src.api.post_update_data import recruitment, update_job_opening, create_application
 from fastapi.middleware.cors import CORSMiddleware
 app =  FastAPI()
 

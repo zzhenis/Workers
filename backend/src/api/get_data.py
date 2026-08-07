@@ -1,9 +1,9 @@
 from sqlalchemy import select, func, join
 from sqlalchemy.orm import selectinload, joinedload
-from models.models import Job, Application, Location
-from core.dependency import get_db, AsyncSession
+from src.models.models import Job, Application, Location
+from src.core.dependency import get_db, AsyncSession
 from fastapi import Depends, HTTPException
-from schemas.schemas import JobFilterSchema
+from src.schemas.schemas import JobFilterSchema
 from typing import Optional
 
 async def get_jobs(

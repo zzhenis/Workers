@@ -1,8 +1,8 @@
 from sqlalchemy import String, Integer, ForeignKey, DateTime, Text, Boolean, func, text , UniqueConstraint, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from config import Base
+from src.config import Base
 from datetime import datetime
-from schemas.categorial_db_columns import ExperienceLevel, WorkFormat, EmploymentType
+from src.schemas.categorial_db_columns import ExperienceLevel, WorkFormat, EmploymentType
 
 class Location(Base):
     __tablename__="locations"
