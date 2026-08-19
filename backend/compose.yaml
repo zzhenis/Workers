@@ -63,17 +63,3 @@ services:
       - .:/app
 volumes:
    postgres_data:
-
-#what's the difference between:
-
-# volumes:
-#  - postgres_data
-# and
-# volumes:
-#   postgres_data:
-
-# explain meaning of each number, why not bigger or smaller amount : 
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
-    #   start_period: 30s

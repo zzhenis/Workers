@@ -11,11 +11,14 @@ from src.core.security import password_hasher
 from src.api.get_data import get_jobs, get_applications, get_cities ,get_job, filter_jobs , get_applications_company, get_application
 from src.api.post_update_data import recruitment, update_job_opening, create_application
 from fastapi.middleware.cors import CORSMiddleware
+import os
+
 app =  FastAPI()
+web_url = os.getenv("web_url")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[web_url],
     allow_credentials=True,                  
     allow_methods=["*"],
     allow_headers=["*"]
